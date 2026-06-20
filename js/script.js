@@ -83,6 +83,25 @@ function createFAQ() {
         });
     });
 }
+// Social Login Simulation
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    const socialButtons =
+        document.querySelectorAll(".social-btn");
+
+    socialButtons.forEach(button => {
+
+        button.addEventListener("click", () => {
+
+            const provider =
+                button.textContent.trim();
+
+            alert("Redirecting to " + provider);
+        });
+    });
+
+});
 
 // ==========================
 // SCROLL TO TOP BUTTON
