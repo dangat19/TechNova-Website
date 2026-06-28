@@ -122,6 +122,16 @@ document.addEventListener('DOMContentLoaded', function () {
         }, 2500);
     }
 
+    const API_URL = 'http://localhost:5000/api';
+
+    async function readApiResponse(response) {
+        const data = await response.json().catch(() => ({}));
+        if (!response.ok) {
+            throw new Error(data.message || 'Request failed. Please try again.');
+        }
+        return data;
+    }
+
     // ===== FIREBASE AUTH =====
     const firebaseConfig = window.NEXACORE_FIREBASE_CONFIG;
     const hasFirebaseConfig = firebaseConfig
@@ -244,14 +254,14 @@ document.addEventListener('DOMContentLoaded', function () {
     function signInSuccess(provider) {
         showToast(`Signed in with ${provider}! Redirecting...`, 'success');
         setTimeout(() => {
-            window.location.href = 'index.html';
+            window.location.href = 'welcome.html';
         }, 1500);
     }
 
     function signUpSuccess(provider) {
         showToast(`Account created with ${provider}! Redirecting...`, 'success');
         setTimeout(() => {
-            window.location.href = 'index.html';
+            window.location.href = 'signin.html';
         }, 1500);
     }
 
@@ -347,20 +357,36 @@ document.addEventListener('DOMContentLoaded', function () {
     // ===== EMAIL SIGN-IN FORM =====
     const signinForm = document.getElementById('signinForm');
     if (signinForm) {
-        signinForm.addEventListener('submit', function (e) {
+        signinForm.addEventListener('submit', async function (e) {
             e.preventDefault();
-            if (!firebaseReady) {
-                showFirebaseSetupMessage();
-                return;
-            }
             const email = document.getElementById('signinEmail').value.trim();
             const pwd = document.getElementById('signinPassword').value.trim();
-            if (email && pwd) {
-                auth.signInWithEmailAndPassword(email, pwd)
-                    .then(() => signInSuccess('Email'))
-                    .catch(error => showToast(getFirebaseError(error), 'danger'));
-            } else {
+
+            if (!email || !pwd) {
                 showToast('Please fill in all fields.', 'warning');
+                return;
+            }
+
+            const submitButton = signinForm.querySelector('button[type="submit"]');
+            const originalText = submitButton.innerHTML;
+            submitButton.disabled = true;
+            submitButton.innerHTML = 'Signing In...';
+
+            try {
+                const data = await fetch(`${API_URL}/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password: pwd })
+                }).then(readApiResponse);
+
+                localStorage.setItem('nexacoreToken', data.token);
+                localStorage.setItem('nexacoreUser', JSON.stringify(data.user));
+                signInSuccess('Email');
+            } catch (error) {
+                showToast(error.message, 'danger');
+            } finally {
+                submitButton.disabled = false;
+                submitButton.innerHTML = originalText;
             }
         });
     }
@@ -368,7 +394,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // ===== EMAIL SIGN-UP FORM =====
     const signupForm = document.getElementById('signupForm');
     if (signupForm) {
-        signupForm.addEventListener('submit', function (e) {
+        signupForm.addEventListener('submit', async function (e) {
             e.preventDefault();
             const firstName = document.getElementById('firstName').value.trim();
             const lastName = document.getElementById('lastName').value.trim();
@@ -393,16 +419,26 @@ document.addEventListener('DOMContentLoaded', function () {
                 showToast('Please agree to the Terms of Service.', 'warning');
                 return;
             }
-            if (!firebaseReady) {
-                showFirebaseSetupMessage();
-                return;
+
+            const submitButton = signupForm.querySelector('button[type="submit"]');
+            const originalText = submitButton.innerHTML;
+            submitButton.disabled = true;
+            submitButton.innerHTML = 'Creating Account...';
+
+            try {
+                await fetch(`${API_URL}/register`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ firstName, lastName, email, password: pwd })
+                }).then(readApiResponse);
+
+                signUpSuccess('Email');
+            } catch (error) {
+                showToast(error.message, 'danger');
+            } finally {
+                submitButton.disabled = false;
+                submitButton.innerHTML = originalText;
             }
-            auth.createUserWithEmailAndPassword(email, pwd)
-                .then(result => result.user.updateProfile({
-                    displayName: `${firstName} ${lastName}`
-                }))
-                .then(() => signUpSuccess('Email'))
-                .catch(error => showToast(getFirebaseError(error), 'danger'));
         });
     }
 

@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Welcome - NexaCore Solutions</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <link rel="stylesheet" href="assets/css/style.css" />
+    <style>
+        .welcome-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-top: 50px;
+        }
+        .user-avatar {
+            width: 100px;
+            height: 100px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            margin: 0 auto 20px;
+        }
+        .welcome-title {
+            font-size: 2.5rem;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .user-details {
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            border-left: 4px solid rgba(255,255,255,0.5);
+        }
+        .user-detail-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .user-detail-row:last-child {
+            border-bottom: none;
+        }
+        .user-detail-label {
+            font-weight: 600;
+            opacity: 0.9;
+        }
+        .user-detail-value {
+            font-weight: 500;
+        }
+        .btn-logout {
+            width: 100%;
+            margin-top: 20px;
+            padding: 12px;
+            font-weight: 600;
+            border-radius: 8px;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: 2px solid white;
+            transition: all 0.3s;
+        }
+        .btn-logout:hover {
+            background: white;
+            color: #667eea;
+        }
+        .btn-home {
+            width: 100%;
+            margin-top: 10px;
+            padding: 12px;
+            font-weight: 600;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- ===== NAVBAR ===== -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+    <div class="container">
+        <a class="navbar-brand fw-bold" href="index.html"><i class="fas fa-microchip me-2"></i>NexaCore</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="mainNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
+                <li class="nav-item"><a class="nav-link" href="services.html">Services</a></li>
+                <li class="nav-item"><a class="nav-link" href="projects.html">Projects</a></li>
+                <li class="nav-item"><a class="nav-link" href="gallery.html">Gallery</a></li>
+                <li class="nav-item"><a class="nav-link" href="faq.html">FAQ</a></li>
+                <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+            </ul>
+            <div class="ms-3 d-flex align-items-center">
+                <button id="themeToggle" class="theme-toggle me-2" aria-label="Toggle theme">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <button class="btn btn-outline-light" id="logoutNavBtn">Logout</button>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- ===== WELCOME SECTION ===== -->
+<section class="container" style="min-height: 70vh; display: flex; align-items: center;">
+    <div class="row w-100 justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="welcome-card">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="welcome-title" id="welcomeMessage">
+                    Loading...
+                </div>
+                
+                <div class="user-details" id="userDetails">
+                    <div class="spinner-border text-light" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+
+                <div class="text-center">
+                    <p class="mb-0" style="opacity: 0.9;">
+                        <i class="fas fa-check-circle me-2"></i>You are now logged in to NexaCore
+                    </p>
+                </div>
+
+                <button class="btn btn-home btn-primary" onclick="window.location.href='index.html'">
+                    <i class="fas fa-home me-2"></i>Go to Home
+                </button>
+                <button class="btn btn-logout" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt me-2"></i>Logout
+                </button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer class="footer text-center">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 mb-3 mb-md-0">
+                <h5><i class="fas fa-microchip me-2"></i>NexaCore</h5>
+                <p class="small">Innovating the future, one solution at a time.</p>
+            </div>
+            <div class="col-md-4 mb-3 mb-md-0">
+                <h6>Quick Links</h6>
+                <a href="about.html" class="text-white-50 text-decoration-none me-2">About</a>
+                <a href="services.html" class="text-white-50 text-decoration-none me-2">Services</a>
+                <a href="contact.html" class="text-white-50 text-decoration-none">Contact</a>
+            </div>
+            <div class="col-md-4">
+                <h6>Follow Us</h6>
+                <a href="#" class="text-white-50 me-3"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" class="text-white-50 me-3"><i class="fab fa-twitter"></i></a>
+                <a href="#" class="text-white-50 me-3"><i class="fab fa-linkedin-in"></i></a>
+                <a href="#" class="text-white-50"><i class="fab fa-github"></i></a>
+            </div>
+        </div>
+        <hr class="bg-secondary" />
+        <p class="mb-0">&copy; 2026 NexaCore Solutions. All rights reserved.</p>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    const API_URL = 'http://localhost:5000/api';
+
+    // Check authentication
+    function checkAuth() {
+        const token = localStorage.getItem('token');
+        const user = JSON.parse(localStorage.getItem('user') || 'null');
+
+        if (!token || !user) {
+            window.location.href = 'signin.html';
+            return;
+        }
+
+        // Display welcome message
+        const firstName = user.name.split(' ')[0];
+        document.getElementById('welcomeMessage').innerHTML = `Welcome, ${firstName}! 👋`;
+
+        // Display user details
+        document.getElementById('userDetails').innerHTML = `
+            <div class="user-detail-row">
+                <span class="user-detail-label"><i class="fas fa-user me-2"></i>Full Name</span>
+                <span class="user-detail-value">${user.name}</span>
+            </div>
+            <div class="user-detail-row">
+                <span class="user-detail-label"><i class="fas fa-envelope me-2"></i>Email</span>
+                <span class="user-detail-value">${user.email}</span>
+            </div>
+            <div class="user-detail-row">
+                <span class="user-detail-label"><i class="fas fa-id-card me-2"></i>User ID</span>
+                <span class="user-detail-value">#${user.id}</span>
+            </div>
+        `;
+    }
+
+    // Logout function
+    async function handleLogout() {
+        const token = localStorage.getItem('token');
+
+        try {
+            await fetch(`${API_URL}/logout`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+        } catch (error) {
+            console.error('Logout error:', error);
+        }
+
+        // Clear localStorage
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+
+        // Redirect
+        window.location.href = 'signin.html';
+    }
+
+    // Logout button handlers
+    document.getElementById('logoutBtn').addEventListener('click', handleLogout);
+    document.getElementById('logoutNavBtn').addEventListener('click', handleLogout);
+
+    // Check auth on page load
+    checkAuth();
+</script>
+<script src="assets/js/firebase-config.js"></script>
+<script src="assets/js/script.js"></script>
+</body>
+</html>
