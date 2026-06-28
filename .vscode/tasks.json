@@ -29,6 +29,20 @@
       "isBackground": true,
       "group": "build",
       "problemMatcher": []
+    },
+    {
+      "label": "Run backend API",
+      "type": "shell",
+      "command": "npm",
+      "args": [
+        "start"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}/BACKEND"
+      },
+      "isBackground": false,
+      "group": "build",
+      "problemMatcher": []
     }
   ]
 }

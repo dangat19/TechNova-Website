@@ -3,7 +3,8 @@ const mysql = require('mysql2/promise');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const cors = require('cors');
-require('dotenv').config();
+const path = require('path');
+require('dotenv').config({ path: path.join(__dirname, '.env') });
 
 const app = express();
 app.use(express.json());
@@ -12,6 +13,7 @@ app.use(cors());
 // MySQL connection pool
 const pool = mysql.createPool({
   host: process.env.DB_HOST || 'localhost',
+  port: Number(process.env.DB_PORT || 3306),
   user: process.env.DB_USER || 'root',
   password: process.env.DB_PASSWORD || '',
   database: process.env.DB_NAME || 'nexacore_db',
@@ -25,9 +27,12 @@ const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret_key_change_this';
 // Signup route
 app.post('/api/signup', async (req, res) => {
   try {
-    const { email, password, name } = req.body;
+    const { email, password, name, firstName, lastName } = req.body;
 
-    if (!email || !password || !name) {
+    // Support both `name` or `firstName`/`lastName` payloads from frontend
+    const fullName = (name && name.trim()) || (`${firstName || ''} ${lastName || ''}`).trim();
+
+    if (!email || !password || !fullName) {
       return res.status(400).json({ error: 'All fields required' });
     }
 
@@ -50,7 +55,7 @@ app.post('/api/signup', async (req, res) => {
     // Insert user
     await connection.query(
       'INSERT INTO users (name, email, password) VALUES (?, ?, ?)',
-      [name, email, hashedPassword]
+      [fullName, email, hashedPassword]
     );
 
     connection.release();

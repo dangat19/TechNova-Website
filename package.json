@@ -4,7 +4,8 @@
   "version": "1.0.0",
   "scripts": {
     "dev": "http-server FRONTEND -p 5500 -c-1",
-    "start": "npm run dev"
+    "start": "npm run dev",
+    "backend": "npm --prefix BACKEND start"
   },
   "dependencies": {
     "firebase": "^12.15.0"

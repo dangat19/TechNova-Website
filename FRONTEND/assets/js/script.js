@@ -378,9 +378,12 @@ document.addEventListener('DOMContentLoaded', function () {
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ email, password: pwd })
                 }).then(readApiResponse);
-
+                // Save token and user for both legacy and current pages
                 localStorage.setItem('nexacoreToken', data.token);
                 localStorage.setItem('nexacoreUser', JSON.stringify(data.user));
+                // Welcome page expects `token` and `user` keys
+                localStorage.setItem('token', data.token);
+                localStorage.setItem('user', JSON.stringify(data.user));
                 signInSuccess('Email');
             } catch (error) {
                 showToast(error.message, 'danger');
@@ -426,7 +429,7 @@ document.addEventListener('DOMContentLoaded', function () {
             submitButton.innerHTML = 'Creating Account...';
 
             try {
-                await fetch(`${API_URL}/register`, {
+                await fetch(`${API_URL}/signup`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ firstName, lastName, email, password: pwd })
